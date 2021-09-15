@@ -23,4 +23,4 @@ mod1<-glm(snow ~ catCount, family=binomial, data=df1)
 summary(mod1)
 
 #create a csv file
-#write.csv("database1.csv")
+write.csv(df1, "data/tidy/database1.csv")
