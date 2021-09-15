@@ -19,7 +19,7 @@ df1$max = 10
 #analyze dataset
 library(lme4)
 
-mod1<-glm(as.factor(var1) ~ catCount, family=binomial, data=df1)
+mod1<-glm(snow ~ catCount, family=binomial, data=df1)
 summary(mod1)
 
 #create a csv file
