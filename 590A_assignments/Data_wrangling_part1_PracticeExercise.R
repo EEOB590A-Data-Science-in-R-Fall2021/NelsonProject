@@ -14,6 +14,8 @@ library(readxl)
 # 2) Read in data from the InsectData tab --------
 Insect <- read_excel("data/raw/Data_wrangling_day1_pollination.xlsx", sheet = 1)
 
+##### Haldre comment: I'd probably call it insect with a lowercase I, just to save effort when typing, but that's personal preference. 
+
 # 3) Rename columns --------
 # Leave columns of insect orders with capital letters, but make all other 
 # column names lowercase. 
@@ -34,6 +36,9 @@ Insect <- Insect %>%
   rename(transect = tract)
 
 colnames(Insect)
+
+##### Haldre comment:  Looks good. Can do all of this in one chunk of code, for efficiency. 
+
 # 4) Add missing data --------
 # Note that the people who entered the data did not drag down the island or 
 # location column to fill every row. Double check to make sure this worked correctly. 
@@ -68,6 +73,7 @@ insect_comp <- insect_fill %>%
 ## There may have been an issue with our assumption and use of 'fill'
 ## function so some island:site pairs were mismatched.
 
+##### Haldre comment:  Yup! 
 
 # 7) Unite island, site, transect into a single column -----
 # Do not add spaces or punctuation between each part. Call this column uniqueID. 
@@ -91,6 +97,7 @@ insect_wider <- insect_long %>%
 ## Yes, there are duplicate values when we don't consider
 ## color as a variable to organize the dataset.
 
+###Haldre: don't need to use "tidyr::" before pivot_wider. Only necessary if you need to clearly indicate which package a function comes from. 
 
 # 10) Join the "InsectData" with the "CollectionDates" tab ---------
 # Add a collection date for each row of InsectData. You'll need to read in the
@@ -127,3 +134,5 @@ full <- insect_long %>%
   full_join(collection, (by = c("island", "site")))
 
 write.csv(full, "data/tidy/dw_day1_pollination_tidy.csv", row.names=F)
+
+### Haldre- nicely done! 
