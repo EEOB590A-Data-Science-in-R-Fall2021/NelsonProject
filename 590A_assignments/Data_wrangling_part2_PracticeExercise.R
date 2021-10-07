@@ -25,7 +25,6 @@ pollination <- pollination %>%
 ## 1.5) What format are the dates in? Change to date format ----
 ### already in date format
 
-
 # Part 2: Fix errors within cells ------
 ## 2.1) Fix the levels of island and site ------
 # Make sure all island and site names are in lowercase 
