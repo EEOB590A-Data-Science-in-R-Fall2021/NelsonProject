@@ -18,14 +18,14 @@ library(tidyverse)
 # Read file using read.csv, naming it something. Note that this must be in your 
 # working directory
 
-spider <- read.csv("D:/ISU/Semester/21Fall/EEOB590A/week2/spider.csv", header = TRUE)
+spider <- read.csv("data/raw/spider.csv", header = TRUE)
 
 # You can also use use file.choose()
 spider <- read.csv(file.choose())
 
 #can also use the tidyverse approach to load CSV files
 library(readr)
-spidertv <- read_csv("D:/ISU/Semester/21Fall/EEOB590A/week2/spider.csv") #readr approach to loading csv's
+spidertv <- read_csv("data/raw/spider.csv") #readr approach to loading csv's
 
 #what are the differences? 
 str(spider) # dataframe
@@ -36,15 +36,19 @@ library(readxl)
 
 #Use 'sheet = (fill in number)" to get the second or third sheet or whatever sheet number you want
 
-spiderprey2 <- read_excel("D:/ISU/Semester/21Fall/EEOB590A/week2/Prey_Capture_Final_Do_Not_Touch.xlsx", sheet = 2)
+spiderprey2 <- read_excel("data/raw/Prey_Capture_Final_Do_Not_Touch.xlsx", sheet = 2)
 
 ## Your Turn ##
 
-# 1) Read in the first sheet of the Prey_Capture_Final excel file. Name it something appropriate for the content. 
-spiderprey1 <- read_excel("D:/ISU/Semester/21Fall/EEOB590A/week2/Prey_Capture_Final_Do_Not_Touch.xlsx")
+# 1) Read in the first sheet of the Prey_Capture_Final excel file. Name it 
+# something appropriate for the content. 
+spiderprey1 <- read_excel("data/raw/Prey_Capture_Final_Do_Not_Touch.xlsx")
 
-# 2) Use the Import Dataset tool to bring in the dataset and change the classes of columns to something else (e.g. date, character etc.). Then look at the code that ran in the console below. 
-
+# 2) Use the Import Dataset tool to bring in the dataset and change the classes 
+# of columns to something else (e.g. date, character etc.). Then look at the 
+# code that ran in the console below. 
+spiderprey1 <- read_excel("data/raw/Prey_Capture_Final_Do_Not_Touch.xlsx", sheet=1) %>%
+  
 
 # ----- 2. Getting to know your data ------
 
