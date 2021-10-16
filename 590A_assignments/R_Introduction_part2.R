@@ -1,5 +1,8 @@
 # EEOB590A Fall 2021
 # Intro to R - Part 2
+# Contributor: Jessica Nelson
+# Date: 9/1/2021
+
 library(tidyverse)
 ## readxl library is useful for working with Excel files in R Studio
 

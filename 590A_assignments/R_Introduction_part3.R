@@ -1,5 +1,7 @@
 # EEOB590A Fall 2021
 # Intro to R - Part 3
+# Contributor: Jessica Nelson
+# Date: 9/8/2021
 
 ######## Topics #######
 #1. Practice reading in Excel files, with some added complexity
