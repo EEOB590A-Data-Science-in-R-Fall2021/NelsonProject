@@ -1,4 +1,6 @@
 # EEOB590A - Data_wrangling part 2 practice exercise ------
+# Contributor: Jessica Nelson
+# Date: 9/29/2021
 
 # Part 1: Get set up ----------
 ## 1.1) Load libraries ----------
@@ -23,7 +25,8 @@ pollination <- pollination %>%
                 as.factor)) %>% # to change multiple columns at a time
 
 ## 1.5) What format are the dates in? Change to date format ----
-### already in date format
+# * Q1.5 ----
+# already in date format
 
 # Part 2: Fix errors within cells ------
 ## 2.1) Fix the levels of island and site ------
@@ -38,8 +41,9 @@ pollination2$site[pollination2$site == 'racetrack'] = 'race'
   
 ## 2.2) Do you see any other errors that should be cleaned up? -----
 # Just good practice to do a final check on this. Insect orders should remain capitalized. 
-### no I don't. Transect could be changed to lowercase, but I don't think that will make
-### or break this analysis.
+# * Q2.2 ----
+# no I don't. Transect could be changed to lowercase, but I don't think that will make
+# or break this analysis.
 
 
 # Part 3: Create new columns ------
@@ -56,7 +60,8 @@ pollination2 <- pollination2 %>%
 
 # Part 4: Re-arrange levels of a variable and rearrange rows ------
 ## 4.1) Arrange levels of insectorder by average number of insects. ------ 
-#this will let us create a graph later on of insect orders with the most common on one side and least common on the other side of the x-axis.
+# this will let us create a graph later on of insect orders with the most common 
+# on one side and least common on the other side of the x-axis.
 poll_sum <- pollination2 %>%
   mutate(order = fct_lump(order)) %>%
   group_by(order) %>%
