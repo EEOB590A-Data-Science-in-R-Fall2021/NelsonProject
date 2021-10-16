@@ -1,6 +1,6 @@
 # EEOB590A Fall 2021
 # Intro to R - Part 3
-# Author: Jessica Nelson
+# Contributor: Jessica Nelson
 # Date: 9/8/2021
 
 ######## Topics #######
