@@ -1,5 +1,7 @@
 # EEOB590A - Fall 2021
 # Intro to R - Part 1
+# Author: Jessica Nelson
+# Date: 8/25/2021
 
 ######## Topics #######
 # 1. Getting help
