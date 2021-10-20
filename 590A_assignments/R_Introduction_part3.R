@@ -22,6 +22,8 @@ library(readxl)
 #Let's see how we can fix it. 
 setwd('D:/ISU/Semester/21Fall/EEOB590A/week2')
 
+#### Haldre - be careful about setting your working directory to anywhere other than the project directory. You can navigate to the file in the "files" tab and read it in directly without resetting your wd. 
+
 #1.a - read in the "beans" worksheet and give it the same name as the worksheet tab it came from
 beans <- read_excel("leaf damage ag expt.xls")
 
@@ -41,10 +43,15 @@ beans_cl
 #factor and then check to make sure it is actually a factor
 beans_cl$Number <- as.character(beans_cl$Number)
 
+#### Haldre - should use as.factor() here. 
+
 #check the number of levels for this factor to make sure it converted correctly
 levels(beans_cl$Number)
 head(beans_cl$Number)
 ?levels
+
+### Haldre - you did this correctly, but it was still a character not a factor, so you couldn't see any levels. 
+
 
 #1.b - Herbivory Worksheet
 #read in the "herbivory" worksheet and give it the same name as the worksheet it came from
@@ -53,6 +60,8 @@ herbivory <- read_excel("leaf damage ag expt.xls", sheet = 2)
 #Notice that there are some X's in the leaflet columns of the herbivory worksheet?
 #Read it in again, but this time tell R that the X means NA, and give the dataframe a new  name so you can compare. 
 herbivory
+
+#### Haldre - I think you're missing the code for reading it in a second time with the "na = "X"" argument in there. 
 
 #Read the herbivory datasheet in again, but pull in everything but columns L and M because they do not belong with rows 2-6. If you aren't sure how to do this, look at the help file for the function that reads in excel files
 herbivory <- read_excel("leaf damage ag expt.xls", sheet = 2, range = cell_cols("A:K"))
@@ -78,3 +87,5 @@ str(dates_tb)
 
 dates_tb$duration = dates_tb$date1 - dates_tb$date2
 dates_tb$duration
+
+#### Haldre - generally good. See a few comments interspersed above, indicated by "#### Haldre"

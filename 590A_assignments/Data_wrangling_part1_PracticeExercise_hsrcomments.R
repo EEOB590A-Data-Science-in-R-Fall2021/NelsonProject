@@ -1,5 +1,7 @@
 # EEOB590A
+# Contributor: Jessica Nelson
 # 22 September 2021 
+
 # Data wrangling part 1, practice script ----------
 
 # We will be working with a real insect pan traps dataset that I've amended 
@@ -37,8 +39,11 @@ Insect <- Insect %>%
 
 colnames(Insect)
 
+<<<<<<< HEAD
 ##### Haldre comment:  Looks good. Can do all of this in one chunk of code, for efficiency. 
 
+=======
+>>>>>>> 0ed55a90539486a3428c17d03b158c88986b0889
 # 4) Add missing data --------
 # Note that the people who entered the data did not drag down the island or 
 # location column to fill every row. Double check to make sure this worked correctly. 
@@ -58,7 +63,8 @@ insect_fill <- insect_fill %>%
 insect_comp <- insect_fill %>%
   complete(island,site) 
 
-# Which transects appear to be missing, and why? 
+# Which transects appear to be missing, and why?
+# * Q6 ----
 ## Guam/ForbiA/L?
 ## Guam/ForbiGrid/L?
 ## Guam/LADTA/L?
@@ -94,6 +100,7 @@ insect_wider <- insect_long %>%
   tidyr::pivot_wider(names_from = order, values_from = abundance, values_fill = 0)
 
 # Are you getting an error? Can you figure out why? 
+# * Q9 ----
 ## Yes, there are duplicate values when we don't consider
 ## color as a variable to organize the dataset.
 
@@ -108,18 +115,22 @@ collection <- read_excel("data/raw/Data_wrangling_day1_pollination.xlsx", sheet 
 
 InsectCollect_left <- insect_fill %>%
   left_join(collection, by = c("island", "site"))
-# returns 480 obs of 20 variables
+# * Q10.1 ---- 
+# Returns 480 obs of 20 variables
 
 InsectCollect_right <- insect_fill %>%
   right_join(collection, by = c("island" = "island", "site" = "site"))
+# * Q10.2----
 # Returns 448 obs of 20 variables
 
 InsectCollect_inner <- insect_fill %>%
   inner_join(collection, by = c("island", "site"))
+# * Q10.3 ----
 # Returns 448 observations of 20 variables
 
 InsectCollect_full <- insect_fill %>%
   full_join(collection, (by = c("island", "site")))
+# * Q10.4 ----
 # Returns 480 obs of 20 variables
 
 # 11) Create a csv with the long dataframe -------
