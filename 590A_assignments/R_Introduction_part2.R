@@ -51,7 +51,8 @@ spiderprey1 <- read_excel("data/raw/Prey_Capture_Final_Do_Not_Touch.xlsx")
 # of columns to something else (e.g. date, character etc.). Then look at the 
 # code that ran in the console below. 
 spiderprey1 <- read_excel("data/raw/Prey_Capture_Final_Do_Not_Touch.xlsx", sheet=1) %>%
-  
+
+#### Haldre comment - probably won't run with the %>% there. And it doesn't change the class of columns yet. Need to change col_types for this to work. 
 
 # ----- 2. Getting to know your data ------
 
@@ -199,3 +200,16 @@ spiderprey2[cols.num] <- sapply(spiderprey2[cols.num],as.numeric)
 spiderprey2$sum1_8 =rowSums(cbind(spiderprey2$obs1,spiderprey2$obs8),na.rm=TRUE) ## https://stackoverflow.com/questions/26046776/sum-two-columns-in-r
 
 spiderprey2
+
+##### Haldre - here is a very basic way of doing what you did above. Your way looks like it'll work fine too.  
+str(spiderprey)
+spiderprey$obs2 <- as.numeric(spiderprey$obs2)
+spiderprey$obs3 <- as.numeric(spiderprey$obs3)
+spiderprey$obs4 <- as.numeric(spiderprey$obs4)
+spiderprey$obs5 <- as.numeric(spiderprey$obs5)
+spiderprey$totprey2 <- spiderprey
+
+spiderprey$obs1 + spiderprey$obs3 + spiderprey$obs4 + spiderprey$obs5
+
+
+#### Haldre - good job! 

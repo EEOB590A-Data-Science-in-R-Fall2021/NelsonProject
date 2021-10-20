@@ -13,6 +13,8 @@ library(ggplot2)
 
 ggplot(df1,aes(state,catCount))+geom_point()
 
+#### Haldre - add whitespace after commas and before/after +
+
 #create new column
 df1$max = 10
 
@@ -22,5 +24,9 @@ library(lme4)
 mod1<-glm(snow ~ catCount, family=binomial, data=df1)
 summary(mod1)
 
+#### Haldre - add whitespace before/after equal sign
+
 #create a csv file
 write.csv(df1, "data/tidy/database1.csv")
+
+#### Haldre - stylish! See above for a couple spacing corrections. 
