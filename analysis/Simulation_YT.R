@@ -6,27 +6,28 @@
 library(tidyverse)
 
 # load dataset just for comparison -----
-transplant_tidy <- read.csv("data/tidy/transplant_tidy_clean.csv")
+transplant_tidy <- read.csv("data/tidy/pad.csv")
 
 # 1. Define your expected dataset ---------
 # We need the following columns: 
-  # response: websize or duration
-  # predictors: island, site, netting
+  # response: weight and Days
+  # predictors: site, treatment, position, year
 
-# We sampled two islands: Guam & Saipan. 
-# Sampled 3 sites on Saipan, 3 sites on Guam
-# At each site, we sampled 14 webs
+# We sampled 12 paired watersheds. 
+# Sampled 12 watersheds (+) prairie strip, 12 watersheds (-) prairie strip
+# In each watershed, we sampled 60-150 pads
 # Half of the webs with netting, half without
-# Total of 14*6 = 84 webs
+# Total = 5892 webs
 
 # 2. Simulate response ------------
-# we will treat websize as a normal distribution
-# we predict that webs will be smaller on Saipan without a net 
-gnetwebsize <- rnorm(n = 21, mean = c(54), sd = c(5)) #simulate guam with net
-gnonetwebsize <- rnorm(n = 21, mean = c(54), sd = c(5)) #simulate guam without net
-snetwebsize <- rnorm(n = 21, mean = c(54), sd = c(5)) #simulate saipan with net
-snonetwebsize <- rnorm(n = 21, mean = c(49), sd = c(4)) #simulate saipan without net
-websize <- c(gnetwebsize, gnonetwebsize, snetwebsize, snonetwebsize)
+# we will treat pad as a normal distribution
+# we predict that mass soil movement will be smaller in watersheds with prairie 
+# strips vs. field without prairie strips
+strips <- rnorm(n = 2946, mean = c(540), sd = c(675)) #simulate guam with net
+nostrips <- rnorm(n = 2946, mean = c(430), sd = c(540)) #simulate guam without net
+#snetwebsize <- rnorm(n = 21, mean = c(54), sd = c(5)) #simulate saipan with net
+#snonetwebsize <- rnorm(n = 21, mean = c(49), sd = c(4)) #simulate saipan without net
+#websize <- c(gnetwebsize, gnonetwebsize, snetwebsize, snonetwebsize)
 
 # other distributions
 gpois <- rpois(n=21, lambda=54)
@@ -35,7 +36,7 @@ gbinom <- rbinom(n=21, size=1, .1)
 
 # 2. Simulate predictors ---------
 
-island <- rep(c("guam", "saipan"), each = 42)
+year <- rep(c("2016", "saipan"), each = 42)
 gsite <- factor(rep (c("a", "b", "c"), each = 7, times = 2))
 ssite <- factor(rep (c("d", "e", "f"), each = 7, times = 2))
 site <- c(gsite, ssite) #just need to use c() because both are vectors
