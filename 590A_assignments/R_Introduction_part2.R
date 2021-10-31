@@ -50,7 +50,10 @@ spiderprey1 <- read_excel("data/raw/Prey_Capture_Final_Do_Not_Touch.xlsx")
 # 2) Use the Import Dataset tool to bring in the dataset and change the classes 
 # of columns to something else (e.g. date, character etc.). Then look at the 
 # code that ran in the console below. 
-spiderprey1 <- read_excel("data/raw/Prey_Capture_Final_Do_Not_Touch.xlsx", sheet=1) %>%
+spiderprey1 <- read_excel("data/raw/Prey_Capture_Final_Do_Not_Touch.xlsx", sheet=1,
+                          col_types = c('text', 'text', 'text', 'numeric', 'numeric', 
+                                        'numeric', 'numeric', 'numeric', 'numeric', 'text'))
+head(spiderprey1)
 
 #### Haldre comment - probably won't run with the %>% there. And it doesn't change the class of columns yet. Need to change col_types for this to work. 
 

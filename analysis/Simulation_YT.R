@@ -6,51 +6,61 @@
 library(tidyverse)
 
 # load dataset just for comparison -----
-transplant_tidy <- read.csv("data/tidy/pad.csv")
+soil2016 <- read.csv("data/tidy/pad.csv") %>%
+  ## select only 2016
+  filter(Year == '2016') %>%
+  ## Convert categorical variables to be factors (just to be sure they are being handled correctly in the model)
+  mutate(across(
+    .cols = c(SiteID, PadID, Treatment, Position),
+    .fns = factor)) %>%
+  mutate(wpd = weight / Days * 1000) %>%
+  select(SiteID, PadID, Days, Treatment, Position, weight, wpd) %>%
+  na.omit()
+
+str(s2016)
+
+pad_counts <- s2016 %>%
+  group_by(SiteID, Treatment) %>%
+  summarize(mean_trt = mean(wpd),
+            sd_trt = sd(wpd),
+            n = n(), .groups = "drop")
 
 # 1. Define your expected dataset ---------
 # We need the following columns: 
-  # response: weight and Days
+  # response: weight per day
   # predictors: site, treatment, position, year
 
-# We sampled 12 paired watersheds. 
-# Sampled 12 watersheds (+) prairie strip, 12 watersheds (-) prairie strip
+# We sampled 4 paired watersheds. 
+# Sampled 4 watersheds (+) prairie strip, 4 watersheds (-) prairie strip
 # In each watershed, we sampled 60-150 pads
-# Half of the webs with netting, half without
-# Total = 5892 webs
+# Half of the pads place in watersheds with prairie and half of the pads placed in watersheds without prairie
+# Total = 480 pads
 
 # 2. Simulate response ------------
 # we will treat pad as a normal distribution
 # we predict that mass soil movement will be smaller in watersheds with prairie 
 # strips vs. field without prairie strips
-strips <- rnorm(n = 2946, mean = c(540), sd = c(675)) #simulate guam with net
-nostrips <- rnorm(n = 2946, mean = c(430), sd = c(540)) #simulate guam without net
+strips <- rnorm(n = 240, mean = c(436), sd = c(938)) #simulate watershed with prairie
+nostrips <- rnorm(n = 240, mean = c(307), sd = c(545)) #simulate watershed without prairie
 #snetwebsize <- rnorm(n = 21, mean = c(54), sd = c(5)) #simulate saipan with net
 #snonetwebsize <- rnorm(n = 21, mean = c(49), sd = c(4)) #simulate saipan without net
 #websize <- c(gnetwebsize, gnonetwebsize, snetwebsize, snonetwebsize)
 
-# other distributions
-gpois <- rpois(n=21, lambda=54)
-gunif <- runif(n=21, 40, 64)
-gbinom <- rbinom(n=21, size=1, .1)
-
 # 2. Simulate predictors ---------
-
-year <- rep(c("2016", "saipan"), each = 42)
-gsite <- factor(rep (c("a", "b", "c"), each = 7, times = 2))
-ssite <- factor(rep (c("d", "e", "f"), each = 7, times = 2))
-site <- c(gsite, ssite) #just need to use c() because both are vectors
-netting <- rep (c("yes", "no"), each = 21, times = 2)
+#SiteID <- factor(rep (c("a", "b", "c"), each = 7, times = 2))
+#ssite <- factor(rep (c("d", "e", "f"), each = 7, times = 2))
+#site <- c(gsite, ssite) #just need to use c() because both are vectors
+field <- rep (c("control", "strips"), each = 21, times = 2)
 
 # Other helpful code for binomial data
 # predictor: 
-trtmt <- sample(c("Treated","Untreated"), size = 20, replace = TRUE)
+position <- sample(c("top","middle","bottom"), size = 20, replace = TRUE)
 # response
-ifelse(trtmt=="Treated", yes = rnorm(20, 10, 1), no = rnorm(20, 20, 1))
+ifelse(position=="top", yes = rnorm(20, 10, 1), no = rnorm(20, 20, 1))
 
 # 3. Combine into a dataframe, and save ------
-simtransplant <- data.frame(island, site, netting, websize)
-write.csv(simtransplant,"data/tidy/simtransplant.csv")
+simpad <- data.frame(field,position,wpd)
+write.csv(simpad,"data/tidy/sim_pad.csv")
 
 # 4. Graph data ------
 ggplot(simtransplant, aes(island, websize, fill=netting))+
