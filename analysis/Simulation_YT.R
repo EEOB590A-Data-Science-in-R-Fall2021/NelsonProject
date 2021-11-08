@@ -51,45 +51,45 @@ nostrips <- rnorm(n = 240, mean = c(4.74), sd = c(1.31)) #simulate watershed wit
 weight <- c(strips, nostrips)
 
 # 2. Simulate predictors ---------
-SiteID <- factor(rep (c("ARM", "EIA", "RHO", "WHI"), each = 4, times = 120))
+SiteID <- factor(rep (c("ARM", "EIA", "RHO", "WHI"),each = 2, times = 60))
 Position <- factor(rep (c("bottom", "middle", "top"), each = 8, times = 2))
-treatment <- factor(rep (c("control", "strips"), each = 2, times = 240))
+treatment <- factor(rep (c("control", "strips"), each = 4, times = 60))
+time <- factor(rep (c("1", "2"), each = 1, times = 240))
 
 # Other helpful code for binomial data
 # predictor: 
-position <- sample(c("top","middle","bottom"), size = 20, replace = TRUE)
+position <- sample(c("top","middle","bottom"), size = 16, replace = TRUE)
 # response
-ifelse(position=="top", yes = rnorm(20, 10, 1), no = rnorm(20, 20, 1))
+ifelse(position=="top", yes = rnorm(16, 8, 1), no = rnorm(16, 16, 1))
 
 # 3. Combine into a dataframe, and save ------
-simpad <- data.frame(field,position,wpd)
+simpad <- data.frame(treatment,Position, SiteID, time, weight)
 write.csv(simpad,"data/tidy/sim_pad.csv")
 
 # 4. Graph data ------
-ggplot(simtransplant, aes(island, websize, fill=netting))+
+ggplot(simpad, aes(treatment, weight))+
   geom_boxplot()
 
-ggplot(simtransplant, aes(websize))+
+ggplot(simpad, aes(weight))+
   geom_histogram(binwidth = 5) +
-  facet_grid(netting ~ island)
-
+  facet_grid(treatment)
 
 # 5. Run a model with dataset -------
-m1 <- lm(response ~ netting * island, data = simtransplant)
+m1 <- lm(weight ~ treatment, data = simpad)
 summary(m1)
 
 # 6. Using tidyverse approach ---------
-n_obs = 84 # must use a factor of 4, try 84, 168, 336, 504
-tidysimtransplant <- data.frame(uniqueid = seq(1, n_obs, 1)) %>%
+n_obs = 480 # must use a factor of 4, try 84, 168, 336, 504
+tidysimpad <- data.frame(uniqueid = seq(1, n_obs, 1)) %>%
   mutate(
-    island = rep(c("guam", "saipan"), each = 2, times = n_obs/4),
-    #site = rep(c("a", "b", "c", "d", "e", "f"), each = 2, times = n_obs/12),
-    netting = rep (c("yes", "no"), each = 1, times = n_obs/2), 
-    websize = rnorm(n_obs, mean = c(54, 54, 54, 49), sd = c(5, 5, 5, 4)))
+    siteID = rep(c("ARM", "EIA", "RHO", "WHI"), each = 2, times = n_obs/8),
+    time = rep (c("1", "2"), each = 1, times = n_obs/2), 
+    treatment = rep (c("control", "strips"), each = 2, n_obs/4),
+    weight = rnorm(n_obs, mean = c(4.91, 4.3, 5.81, 3.69), sd = c(1.44, 0.724, 1.38, 1.21)))
 
-ggplot(tidysimtransplant, aes(island, websize, color = netting)) +
+ggplot(tidysimpad, aes(treatment, weight)) +
     geom_boxplot()
 
-summary(lm(websize ~ island * netting, data = tidysimtransplant))
+summary(lm(weight ~ treatment, data = tidysimpad))
 
 #change the mean values and the sample size, and see whether you get a significant result. Run several times at each set of values because each time you run rnorm, you get a new random draw of websizes. 
