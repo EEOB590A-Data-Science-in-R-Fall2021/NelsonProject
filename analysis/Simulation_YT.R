@@ -13,22 +13,27 @@ soil2016 <- read.csv("data/tidy/pad.csv") %>%
   mutate(across(
     .cols = c(SiteID, PadID, Treatment, Position),
     .fns = factor)) %>%
-  mutate(wpd = weight / Days * 1000) %>%
-  select(SiteID, PadID, Days, Treatment, Position, weight, wpd) %>%
+  mutate(wpd = (weight / Days * 1000) + 0.2381,
+         ln_wpd = log(wpd)) %>%
+  select(SiteID, PadID, Days, Treatment, Position, weight, wpd, ln_wpd) %>%
   na.omit()
 
-str(s2016)
+str(soil2016)
 
-pad_counts <- s2016 %>%
+pad_counts <- soil2016 %>%
   group_by(SiteID, Treatment) %>%
-  summarize(mean_trt = mean(wpd),
+  summarize(mean_trt = mean(wpd, na.rm = TRUE),
             sd_trt = sd(wpd),
+            ln_mean_trt = mean(ln_wpd, na.rm = TRUE),
+            ln_sd_trt = sd(ln_wpd),
             n = n(), .groups = "drop")
+
+pad_counts
 
 # 1. Define your expected dataset ---------
 # We need the following columns: 
   # response: weight per day
-  # predictors: site, treatment, position, year
+  # predictors: site, treatment, position
 
 # We sampled 4 paired watersheds. 
 # Sampled 4 watersheds (+) prairie strip, 4 watersheds (-) prairie strip
@@ -40,17 +45,15 @@ pad_counts <- s2016 %>%
 # we will treat pad as a normal distribution
 # we predict that mass soil movement will be smaller in watersheds with prairie 
 # strips vs. field without prairie strips
-strips <- rnorm(n = 240, mean = c(436), sd = c(938)) #simulate watershed with prairie
-nostrips <- rnorm(n = 240, mean = c(307), sd = c(545)) #simulate watershed without prairie
-#snetwebsize <- rnorm(n = 21, mean = c(54), sd = c(5)) #simulate saipan with net
-#snonetwebsize <- rnorm(n = 21, mean = c(49), sd = c(4)) #simulate saipan without net
-#websize <- c(gnetwebsize, gnonetwebsize, snetwebsize, snonetwebsize)
+strips <- rnorm(n = 240, mean = c(4.92), sd = c(1.23)) #simulate watershed with prairie
+nostrips <- rnorm(n = 240, mean = c(4.74), sd = c(1.31)) #simulate watershed without prairie
+
+weight <- c(strips, nostrips)
 
 # 2. Simulate predictors ---------
-#SiteID <- factor(rep (c("a", "b", "c"), each = 7, times = 2))
-#ssite <- factor(rep (c("d", "e", "f"), each = 7, times = 2))
-#site <- c(gsite, ssite) #just need to use c() because both are vectors
-field <- rep (c("control", "strips"), each = 21, times = 2)
+SiteID <- factor(rep (c("ARM", "EIA", "RHO", "WHI"), each = 4, times = 120))
+Position <- factor(rep (c("bottom", "middle", "top"), each = 8, times = 2))
+treatment <- factor(rep (c("control", "strips"), each = 2, times = 240))
 
 # Other helpful code for binomial data
 # predictor: 
