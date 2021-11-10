@@ -234,7 +234,7 @@ min(survey$centavgopen)
 ## orders of magnitude.
 
 # 5.1.a.2: Zero-inflation (response)
-## Not applicable for propalive, because response is continuous duration doesn't have any zero's so not an issue here. 
+## Not applicable for propalive, because response is continuous doesn't have any zero's so not an issue here. 
 
 # 5.1.a.3: Independence (response)
 ggplot(survey, aes(x = centavgopen, y= propalive)) +
