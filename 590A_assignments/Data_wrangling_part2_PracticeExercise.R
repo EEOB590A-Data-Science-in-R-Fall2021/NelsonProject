@@ -23,7 +23,8 @@ pollination <- pollination %>%
   mutate(abundance = as.numeric(abundance)) %>% # to change class in one column
   mutate(across(c(island, site, transect, top_color, bowl_color, order), 
                 as.factor)) %>% # to change multiple columns at a time
-
+#### Haldre- don't need that last %>% 
+  
 ## 1.5) What format are the dates in? Change to date format ----
 # * Q1.5 ----
 # already in date format
@@ -38,6 +39,9 @@ pollination2 <- pollination %>%
 # Rename sites: forbigrid as forbig and racetrack as race
 pollination2$site[pollination2$site == 'forbigrid'] = 'forbig'
 pollination2$site[pollination2$site == 'racetrack'] = 'race'
+
+### Haldre- in tidyverse, can use this: 
+# mutate(site = fct_recode(site, "forbig" = "forbigrid", "race" = "racetrack"))
   
 ## 2.2) Do you see any other errors that should be cleaned up? -----
 # Just good practice to do a final check on this. Insect orders should remain capitalized. 
@@ -71,6 +75,10 @@ poll_sum <- pollination2 %>%
   #ggplot(aes(x = order, y=mean_count)) +
   #geom_col()
 
+#### haldre - I think this code below will give you what I was asking for. No need to summarise- want the same # of rows in the end. Just need to re-order the factor levels. 
+poll_2 <- pollination2 %>%
+  mutate(order = fct_reorder(order, abundance, mean))
+
 ## 4.2) Arrange entire dataset by the number of insects ------
 # make these descending, so the greatest number is on row 1. 
 pollination2 <- pollination2 %>% 
@@ -79,4 +87,6 @@ pollination2 <- pollination2 %>%
 # Part 5: Print tidied, wrangled database ------
 # name file "poll_long_tidy.csv" and put in tidy database
 write.csv(pollination2, "data/tidy/poll_long_tidy.csv", row.names=F)
+
+#### Haldre- looks good. I added a few lines of code to show other ways of answering the question. 
 

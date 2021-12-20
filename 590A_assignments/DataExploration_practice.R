@@ -64,6 +64,8 @@ survey <- read.csv("data/tidy/fencesurv_tidy.csv") %>%
   plantdt = as.Date(survey$plantdt, "%m/%d/%y"),
   propalive = numalive/numseedplant)
 
+#### Haldre- piping doesn't quite work because you are calling for survey in line 61, but nothing has been assigned to it yet (the line 60 assignment happens at the end)- should read in dataset separately, then pipe. and won't need the survey$ in 61-65. 
+
 # 1.1: Check structure to make sure everything is in correct class
 str(survey)
 
@@ -74,13 +76,13 @@ str(survey)
 # 1.3: Make a new column for proportion alive (propalive) by dividing numalive/numseedplant 
 ## piped above
 
+### Haldre - nice! 
+
 # 1.4: Decide which variables are your response variables and which are your predictors
 # Response: cbind(numalive, numseedplant) or propalive
 # Continuous predictors: centavgopen
 # Categorical predictors: species, distance
 # Random effects: island (n=4 usually), site (n=3/island)
-
-
 
 
 
@@ -121,12 +123,16 @@ ggplot(survey, aes(species, propalive)) + geom_boxplot()
 ## Not applicable for propalive, because response is continuous
 ## duration doesn't have any zero's so not an issue here. 
 
+#### Haldre - propalive has 17% zeros
+survey %>%
+  summarize(sum(numalive/numseedplant == 0) / length(numalive/numseedplant))
+
 # 3.1c: With your continuous response variable, look for independence. 
 # Are there patterns in the data that are unrelated to the fixed or random effects identified above?  Consider patterns over time, for example. 
 ggplot(survey, aes(canopydate, propalive, color=island))+
   geom_boxplot()+
   facet_grid(.~island)
-## It appears there is a relationship with time and proalive variable when comparing Guam, Rota, Saipan and Tinian.
+## It appears there is a relationship with time and propalive variable when comparing Guam, Rota, Saipan and Tinian.
 ## Saipan has a different distribution regarding date and canopy date. Tinian canopied earlier than the other islands.
 
 
@@ -161,7 +167,7 @@ with(survey, ftable(island, species, site, dist))
 ## When categorical variables are crossed, like species by island, we see many sample sizes smaller than 15.
 
 
-
+### Haldre- nice job exploring sample size
 
 
 # 4. Data Exploration - Relationships between variables ------------
@@ -271,3 +277,6 @@ ggplot(survey, aes(x = centavgopen, y= propalive)) +
 ## Variances don't look homogenous between each predictor and response, yet
 ## they also don't look too bad where it would prevent an analysis from occurring. 
 ## I would say the dataset passes the test. 
+
+
+##### Haldre- well done! 
